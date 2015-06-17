@@ -1,0 +1,19 @@
+{
+    "name": "amonger/laravel-payment-commands",
+    "description": "Payment commands for laravel",
+    "require": {
+        "omnipay/omnipay": "^2.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alan Monger",
+            "email": "alan@alanmonger.co.uk"
+        }
+    ],
+    "autoload": {
+        "psr-4":{
+            "PaymentCommands\\": "src/"
+        }
+    }
+}
