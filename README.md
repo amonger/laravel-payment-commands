@@ -30,11 +30,12 @@ After this has been added, you're good to go! Just fire the command bus in your 
         $returnUrl = url('/capture');
         $currency = 'GBP';
 
-        $items = [];
-        $items[] = [
-            'price' => 200,
-            'description' => 'A bike',
-            'quantity' => 1
+        $items = [
+            [
+                'price' => 200,
+                'description' => 'A bike',
+                'quantity' => 1
+            ]
         ];
 
         $redirectUrl = $this->dispatch(new MakePayment($items, $currency, $cancelUrl, $returnUrl));
