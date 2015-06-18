@@ -2,6 +2,7 @@
     "name": "amonger/laravel-payment-commands",
     "description": "Payment commands for laravel",
     "require": {
+        "php": "^5.5",
         "omnipay/omnipay": "^2.3"
     },
     "license": "MIT",
