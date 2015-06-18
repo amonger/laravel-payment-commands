@@ -33,6 +33,8 @@ class CapturePayment extends Command implements SelfHandling
      * @param GatewayInterface $gateway
      * @param Store $session
      * @param Dispatcher $dispatcher
+     *
+     * @return array
      */
     public function handle(GatewayInterface $gateway, Store $session, Dispatcher $dispatcher)
     {
@@ -43,5 +45,6 @@ class CapturePayment extends Command implements SelfHandling
             ->send();
 
         $dispatcher->fire(new TransactionSuccessful($response->getData()));
+        return $response->getData();
     }
 }
