@@ -44,7 +44,8 @@ class CapturePayment extends Command implements SelfHandling
             ->setPayerId($this->payerId)
             ->send();
 
-        $dispatcher->fire(new TransactionSuccessful($response->getData()));
+        $dispatcher->fire(new TransactionSuccessful(array_merge($response->getData(), $session->get('params'))));
+        
         return $response->getData();
     }
 }
