@@ -7,6 +7,7 @@ use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Routing\Redirector;
 use Illuminate\Session\Store;
+use Omnipay\Common\CreditCard;
 use Omnipay\Common\GatewayInterface;
 use PaymentCommands\Paypal\Event\TransactionFailed;
 use PaymentCommands\Paypal\Event\TransactionRedirect;
@@ -19,19 +20,24 @@ class MakePayment extends Command implements SelfHandling
     protected $description;
     protected $currency;
     protected $items;
+    protected $payload;
 
     /**
-     * @param array $items
-     * @param string $currency
-     * @param string $cancelUrl
-     * @param string $returnUrl
+     * MakePayment constructor.
+     *
+     * @param array         $items
+     * @param               $currency
+     * @param               $cancelUrl
+     * @param               $returnUrl
+     * @param callable|null $payload
      */
-    public function __construct(array $items, $currency, $cancelUrl, $returnUrl)
+    public function __construct(array $items, $currency, $cancelUrl, $returnUrl, callable $payload = null)
     {
         $this->items = $items;
         $this->currency = $currency;
         $this->cancelUrl = $cancelUrl;
         $this->returnUrl = $returnUrl;
+        $this->payload = !is_null($payload) ? $payload : function ($payload) { return $payload; };
     }
 
     /**
@@ -78,12 +84,14 @@ class MakePayment extends Command implements SelfHandling
      */
     private function details()
     {
-        return [
+        $payload = [
             'amount' => $this->getSumTotal($this->items),
             'cancelUrl' => $this->cancelUrl,
             'returnUrl' => $this->returnUrl,
             'currency' => $this->currency,
             'items' => $this->items
         ];
+
+        return ($this->payload)($payload);
     }
 }
